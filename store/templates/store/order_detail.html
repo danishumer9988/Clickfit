@@ -1,0 +1,77 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background: #111;
+        color: #fff;
+        font-family: Arial, sans-serif;
+    }
+
+    .order-container {
+        max-width: 800px;
+        margin: 80px auto;
+        background: #222;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+
+    .order-container h2 {
+        color: #8e2de2;
+        margin-bottom: 20px;
+    }
+
+    .order-container p, .order-container li {
+        color: #ccc;
+        margin-bottom: 10px;
+        line-height: 1.6;
+    }
+
+    .order-container ul {
+        padding-left: 20px;
+    }
+
+    .order-container li {
+        list-style: disc;
+    }
+
+    .btn-view-more {
+        display: inline-block;
+        margin-top: 30px;
+        padding: 12px 25px;
+        background: #8e2de2;
+        color: #fff;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background 0.3s;
+    }
+
+    .btn-view-more:hover {
+        background: #7b1fa2;
+    }
+</style>
+
+<div class="order-container">
+    <h2>Order #{{ order.id }} Details</h2>
+    <p><strong>Name:</strong> {{ order.name }}</p>
+    <p><strong>Email:</strong> {{ order.email }}</p>
+    <p><strong>Phone:</strong> {{ order.phone }}</p>
+    <p><strong>Address:</strong> {{ order.address }}</p>
+    <p><strong>City:</strong> {{ order.city }}</p>
+    <p><strong>Province:</strong> {{ order.province }}</p>
+    <p><strong>Postal Code:</strong> {{ order.postal_code }}</p>
+    <p><strong>Total Price:</strong> ${{ order.total_price }}</p>
+
+    <h3 style="color:#8e2de2; margin-top:20px;">Items:</h3>
+    <ul>
+        {% for item in order.orderitem_set.all %}
+            <li>{{ item.product.name }} - Quantity: {{ item.quantity }} - ${{ item.price }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'product_list' %}" class="btn-view-more">Shop More</a>
+</div>
+
+{% endblock %}

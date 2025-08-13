@@ -1,0 +1,174 @@
+{% extends 'store/base.html' %}
+{% load cart_extras %}
+
+{% block content %}
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #121212;
+        color: #f1f1f1;
+    }
+
+    .receipt-container {
+        max-width: 700px;
+        margin: 50px auto;
+        background: #121212; /* Same as body */
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,255,180,0.1); /* Soft neon glow */
+        animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px);}
+        to { opacity: 1; transform: translateY(0);}
+    }
+
+    .receipt-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .receipt-header h1 {
+        color: #00C897;
+        margin-bottom: 8px;
+        font-size: 32px;
+    }
+
+    .receipt-header p {
+        color: #999;
+        font-size: 14px;
+    }
+
+    .details, .summary {
+        margin-top: 20px;
+    }
+
+    .details h3, .summary h3 {
+        border-bottom: 2px solid #2b2b2b;
+        padding-bottom: 8px;
+        color: #00C897;
+        margin-bottom: 15px;
+        font-size: 20px;
+    }
+
+    .details p, .summary p {
+        margin: 6px 0;
+        color: #ccc;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        color: #ddd;
+    }
+
+    th, td {
+        padding: 10px;
+        border-bottom: 1px solid #2b2b2b;
+        text-align: left;
+    }
+
+    th {
+        background: #1a1a1a;
+        color: #eee;
+    }
+
+    .total {
+        text-align: right;
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 15px;
+        color: #f1f1f1;
+    }
+
+    .button-group {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .button-group button, .button-group a {
+        background: #00C897;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 30px;
+        font-size: 16px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s;
+    }
+
+    .button-group button:hover, .button-group a:hover {
+        background: #00A67E;
+        transform: translateY(-2px);
+    }
+</style>
+
+<div class="receipt-container" id="receipt-content">
+    <div class="receipt-header">
+        <h1>Order Receipt</h1>
+        <p>Order ID: {{ order.id }} | Date: {{ order.created_at|date:"d M Y H:i" }}</p>
+    </div>
+
+    <div class="details">
+        <h3>Customer Information</h3>
+        <p><strong>Name:</strong> {{ order.name }}</p>
+        <p><strong>Email:</strong> {{ order.email }}</p>
+        <p><strong>Phone:</strong> {{ order.phone }}</p>
+        <p><strong>Address:</strong> {{ order.address }}, {{ order.city }}, {{ order.province }}, {{ order.postal_code }}</p>
+    </div>
+
+    <div class="summary">
+        <h3>Order Summary</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Unit Price</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.items.all %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>${{ item.price }}</td>
+                    <td>${{ item.quantity|multiply:item.price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="total">
+            Total: ${{ order.total_price }}
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button onclick="downloadReceipt()">Download Receipt</button>
+        <a href="{% url 'product_list' %}">Back to Shop</a>
+    </div>
+</div>
+
+<script>
+    function downloadReceipt() {
+        var content = document.getElementById('receipt-content').innerHTML;
+        var original = document.body.innerHTML;
+
+        document.body.innerHTML = content;
+        window.print();
+        document.body.innerHTML = original;
+        location.reload();
+    }
+</script>
+
+{% endblock %}

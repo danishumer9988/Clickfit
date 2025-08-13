@@ -1,0 +1,91 @@
+{% extends 'store/base.html' %}
+{% block content %}
+
+<style>
+    body {
+        background-color: #121212;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .policy-container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 40px;
+        background: #1f1f1f;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 255, 180, 0.15);
+        color: #ccc;
+        line-height: 1.8;
+        transition: all 0.3s ease;
+    }
+
+    .policy-container h1 {
+        font-size: 36px;
+        color: #00C897;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    .policy-container h2 {
+        font-size: 22px;
+        color: #00C897;
+        margin-top: 25px;
+    }
+
+    .policy-container p, .policy-container li {
+        font-size: 16px;
+        margin-bottom: 15px;
+        color: #ddd;
+    }
+
+    .policy-container ul {
+        padding-left: 20px;
+    }
+
+    .policy-container a {
+        color: #00C897;
+        text-decoration: underline;
+    }
+
+    .policy-container a:hover {
+        text-decoration: none;
+        color: #0ff0c3;
+    }
+</style>
+
+<div class="policy-container">
+    <h1>Return & Refund Policy</h1>
+
+    <p>We want you to be happy with your purchase! That's why we offer a <strong>7-day return policy</strong> on all tech products. If you are not satisfied for any reason, you can return the product for a full refund.</p>
+
+    <h2>How to Return a Product</h2>
+    <ul>
+        <li>Contact us within 7 days of receiving your order.</li>
+        <li>Provide your order number and the reason for the return.</li>
+        <li>We will send you a return shipping label.</li>
+        <li>Pack the product securely and send it back using the provided label.</li>
+        <li>Once we receive the returned product, your refund will be processed within 10 business days.</li>
+    </ul>
+
+    <h2>Exceptions to the Return Policy</h2>
+    <p>The following items are <strong>not eligible for return:</strong></p>
+    <ul>
+        <li>Products that have been used or damaged.</li>
+        <li>Products missing parts or accessories.</li>
+        <li>Products purchased on sale or clearance.</li>
+    </ul>
+
+    <h2>Refunds</h2>
+    <p>Refunds will be processed to the original payment method:</p>
+    <ul>
+        <li>If you paid by credit card, the refund will be credited back to your account.</li>
+        <li>If you paid via Bank, JazzCash, or Easypaisa, the refund will be sent to your account.</li>
+    </ul>
+
+    <h2>Contact Us</h2>
+    <p>If you have any questions about this policy, please contact us at <a href="mailto:Support@clickfit.store">Support@clickfit.store</a>.</p>
+
+    <p>Thank you for shopping with <strong>Click Fit!</strong></p>
+</div>
+
+{% endblock %}

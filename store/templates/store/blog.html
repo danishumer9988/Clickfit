@@ -1,0 +1,100 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Our Blog - Clickfit{% endblock %}
+
+{% block nav-color %}
+navbar-colored
+{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #111;
+    }
+
+    .blog-section {
+        max-width: 1000px;
+        margin: 80px auto;
+        padding: 40px 20px;
+    }
+
+    .blog-section h1 {
+        color: #8e2de2;
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 36px;
+    }
+
+    .blog-post {
+        background-color: #222;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        margin-bottom: 30px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        color: #fff;
+    }
+
+    .blog-post:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+    }
+
+    .blog-post h2 {
+        margin-top: 0;
+        color: #8e2de2;
+        font-size: 24px;
+    }
+
+    .blog-post p {
+        color: #ccc;
+        line-height: 1.8;
+        font-size: 16px;
+        text-align: justify;
+    }
+
+    .blog-post .date {
+        color: #888;
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    @media (max-width: 768px) {
+        .blog-section {
+            padding: 20px 10px;
+        }
+    }
+</style>
+
+<div class="blog-section">
+    <h1>Our Latest Blog Posts</h1>
+
+    <div class="blog-post">
+        <div class="date">Published: July 10, 2025</div>
+        <h2>Best Smartwatches to Buy in 2025</h2>
+        <p>
+            Discover the top smartwatches that offer fitness tracking, notifications, and style.
+            Whether you're looking for a budget-friendly option or a premium gadget, we've got you covered.
+        </p>
+    </div>
+
+    <div class="blog-post">
+        <div class="date">Published: July 5, 2025</div>
+        <h2>How to Choose the Right Wireless Earphones</h2>
+        <p>
+            Shopping for wireless earphones? This guide will help you understand sound quality, battery life,
+            and Bluetooth compatibility so you can pick the perfect pair.
+        </p>
+    </div>
+
+    <div class="blog-post">
+        <div class="date">Published: June 25, 2025</div>
+        <h2>Top 5 Power Banks for Your Travels</h2>
+        <p>
+            Never run out of battery again. Here are our top 5 picks for power banks that are compact, long-lasting,
+            and perfect for travel in 2025.
+        </p>
+    </div>
+
+</div>
+{% endblock %}

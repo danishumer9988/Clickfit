@@ -1,0 +1,52 @@
+{% extends "admin/base.html" %}
+
+{% block title %}My Admin | {{ block.super }}{% endblock %}
+
+{% block extrastyle %}
+<style>
+    body, .module, .dashboard-module {
+        background: #0b1d3a !important; /* Dark Blue Background */
+        color: #fff !important;
+    }
+
+    #header, .module caption {
+        background: #0e2a58 !important; /* Darker Blue Header */
+        color: #fff !important;
+        box-shadow: 0 0 10px #0e2a58;
+    }
+
+    #user-tools, #branding h1 a {
+        color: #fff !important;
+    }
+
+    a {
+        color: #4fc3f7 !important; /* Light Blue Links */
+    }
+
+    a:hover {
+        color: #29b6f6 !important;
+    }
+
+    .button, input[type=submit], .submit-row input {
+        background: #1565c0 !important; /* Medium Blue Buttons */
+        border: none !important;
+        color: #fff !important;
+        box-shadow: 0 0 10px #1565c0;
+    }
+
+    .button:hover, input[type=submit]:hover {
+        background: #0d47a1 !important; /* Darker Blue on Hover */
+    }
+
+    .login .submit-row input {
+        background: #1565c0 !important;
+        border: none !important;
+        color: #fff !important;
+        box-shadow: 0 0 10px #1565c0;
+    }
+
+    .login .submit-row input:hover {
+        background: #0d47a1 !important;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #f1f1f1;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #00C897;
+        }
+
+        h3 {
+            color: #00C897;
+            margin-top: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1a1a1a;
+            box-shadow: 0 0 10px rgba(0,255,180,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #2b2b2b;
+            text-align: left;
+            color: #ccc;
+        }
+
+        th {
+            background-color: #222;
+            color: #f1f1f1;
+        }
+
+        p {
+            margin: 8px 0;
+            color: #ccc;
+        }
+
+        .total {
+            font-size: 18px;
+            color: #fff;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>Order Receipt #{{ order.id }}</h2>
+
+    <p><strong>Name:</strong> {{ order.name }}</p>
+    <p><strong>Phone:</strong> {{ order.phone }}</p>
+    <p><strong>Address:</strong> {{ order.address }}, {{ order.city }}, {{ order.province }}, {{ order.postal_code }}</p>
+
+    <h3>Order Items</h3>
+
+    <table>
+        <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+        </tr>
+        {% for item in order.items.all %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ item.price }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p class="total">Total: ${{ order.total_price }}</p>
+</body>
+</html>

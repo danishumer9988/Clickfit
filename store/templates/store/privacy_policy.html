@@ -1,0 +1,110 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+
+<style>
+    body {
+        background-color: #111;
+        color: #fff;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .privacy-container {
+        max-width: 900px;
+        margin: 80px auto;
+        padding: 40px;
+        background: #222;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        line-height: 1.8;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .privacy-container h1 {
+        font-size: 36px;
+        color: #8e2de2;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    .privacy-container h2 {
+        font-size: 22px;
+        color: #ccc;
+        margin-top: 25px;
+    }
+
+    .privacy-container p, .privacy-container li {
+        font-size: 16px;
+        margin-bottom: 15px;
+        color: #ddd;
+    }
+
+    .privacy-container ul {
+        padding-left: 20px;
+    }
+
+    .privacy-container li::marker {
+        color: #8e2de2;
+    }
+
+    .privacy-container a {
+        color: #8e2de2;
+        text-decoration: underline;
+    }
+
+    .privacy-container a:hover {
+        color: #b55bff;
+    }
+</style>
+
+<div class="privacy-container">
+    <h1>Privacy Policy</h1>
+
+    <p>At <strong>Click Fit Store</strong>, we respect your privacy and are committed to protecting the personal information you share with us. This policy explains how we collect, use, and safeguard your information.</p>
+
+    <h2>Information We Collect</h2>
+    <p>When you place an order, sign up for our newsletter, or contact us, we may collect the following information:</p>
+    <ul>
+        <li>Your name</li>
+        <li>Email address</li>
+        <li>Phone number</li>
+        <li>Shipping and billing address</li>
+        <li>Payment details (processed securely)</li>
+    </ul>
+
+    <h2>How We Use Your Information</h2>
+    <p>Your information is used to:</p>
+    <ul>
+        <li>Process and deliver your orders</li>
+        <li>Send order confirmations and shipping updates</li>
+        <li>Respond to customer service requests</li>
+        <li>Send promotional emails (if you have opted in)</li>
+    </ul>
+
+    <h2>Data Security</h2>
+    <p>We use secure payment gateways and protect your personal information with modern security technologies. Your data is stored safely and is accessible only by authorized personnel.</p>
+
+    <h2>Sharing of Information</h2>
+    <p>We do not sell, trade, or rent your personal information to third parties. We may share information with trusted partners strictly for order processing, delivery, or legal compliance.</p>
+
+    <h2>Cookies</h2>
+    <p>Our website may use cookies to improve your browsing experience. You can choose to disable cookies in your browser settings.</p>
+
+    <h2>Your Rights</h2>
+    <p>You have the right to:</p>
+    <ul>
+        <li>Access the personal data we hold about you</li>
+        <li>Request correction or deletion of your data</li>
+        <li>Opt-out of promotional communications at any time</li>
+    </ul>
+
+    <h2>Changes to This Policy</h2>
+    <p>We may update this privacy policy from time to time. Changes will be posted on this page, so please review it periodically.</p>
+
+    <h2>Contact Us</h2>
+    <p>If you have any questions about our privacy policy, please contact us at <a href="mailto:Support@clickfit.store">Support@clickfit.store</a>.</p>
+
+    <p>Thank you for trusting <strong>Click Fit Store!</strong></p>
+</div>
+
+{% endblock %}

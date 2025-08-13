@@ -1,0 +1,38 @@
+/* Dark Background */
+body, .dashboard-module, .module, .grp-module {
+    background: #121212 !important;
+    color: #fff !important;
+}
+
+/* Header */
+#header, .module caption {
+    background: #8e2de2 !important;
+    color: #fff !important;
+}
+
+/* Sidebar / Navigation */
+#user-tools, .breadcrumbs {
+    background: #1f1f1f !important;
+    color: #fff !important;
+}
+
+/* Buttons */
+.button, input[type=submit], input[type=button] {
+    background: #8e2de2 !important;
+    border: none !important;
+    color: #fff !important;
+    box-shadow: 0 0 8px #8e2de2 !important;
+}
+
+.button:hover {
+    background: #5f1bb5 !important;
+}
+
+/* Links */
+a {
+    color: black !important;
+}
+
+a:hover {
+    color: #ff4b3e !important;
+}

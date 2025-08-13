@@ -1,0 +1,262 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}ClickFit{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        html, body {
+            margin: 0; padding: 0;
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+            background-color: #121212;
+            color: #eee;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .content {
+            flex: 1;
+            padding-top: 80px;
+            padding: 20px;
+            background: #181818;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.4);
+        }
+
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%;
+            padding: 15px 20px;
+            background: #1f1f1f;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; flex-wrap: wrap;
+        }
+
+        .logo img { height: 45px; filter: brightness(1.1); }
+
+        .nav-center {
+            display: flex; align-items: center; justify-content: center; flex-grow: 1;
+            flex-wrap: wrap;
+        }
+
+        .nav-center a {
+            color: #ccc; text-decoration: none;
+            margin: 5px 12px; font-size: 15px; font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-center a:hover { color: #8e2de2; }
+
+        .nav-right {
+            display: flex; align-items: center;
+            margin-right: 50px;
+        }
+
+        .icon-link {
+            color: #ccc; font-size: 22px; margin-left: 10px;
+            text-decoration: none; transition: transform 0.2s;
+        }
+        .icon-link:hover { transform: scale(1.1); color: #8e2de2; }
+
+        .navbar-profile-image {
+            width: 35px; height: 35px;
+            border-radius: 50%; object-fit: cover;
+            background: #2c2c2c; border: 2px solid #555;
+            margin-left: 10px; cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .navbar-profile-image:hover { transform: scale(1.1); }
+
+        .notification-container { position: relative; margin-left: 10px; }
+        .notification-bell { font-size: 20px; cursor: pointer; color: #ccc; position: relative; }
+        .notification-badge { position: absolute; top: -5px; right: -10px; background: #e91e63; color: white; font-size: 10px; padding: 2px 6px; border-radius: 50%; }
+
+        .notification-dropdown {
+            position: absolute; top: 30px; right: 0;
+            background: #2a2a2a; width: 250px; max-height: 300px;
+            overflow-y: auto; border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6); display: none;
+            z-index: 999;
+        }
+
+        .notification-dropdown p {
+            margin: 0; padding: 10px 12px;
+            border-bottom: 1px solid #444;
+            font-size: 13px; color: #ddd;
+        }
+
+        .footer {
+            background: #1f1f1f; color: #aaa; padding: 30px 20px; margin-top: auto;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.5);
+        }
+        .footer-container {
+            max-width: 1100px; margin: auto; padding: 0 20px;
+            display: flex; justify-content: space-between; flex-wrap: wrap; text-align: center;
+        }
+        .footer-section { margin-bottom: 20px; width: 100%; max-width: 300px; }
+        .footer h3 { margin-bottom: 15px; font-size: 18px; color: #fff; }
+        .footer a { color: #999; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s; }
+        .footer a:hover { color: #fff; }
+
+        .newsletter input[type="email"] {
+            padding: 10px; width: 220px; border: none;
+            background: #333; color: #eee;
+            border-radius: 300px; margin-bottom: 10px; outline: none;
+        }
+
+        .newsletter button {
+            padding: 10px 20px; background-color: #8e2de2;
+            border: none; border-radius: 30px; color: #fff; font-weight: bold; cursor: pointer; transition: background 0.3s;
+        }
+
+        .newsletter button:hover { background-color: #7b1fa2; }
+
+        .social-icons { display: flex; justify-content: center; gap: 12px; margin-top: 20px; }
+        .social-icons a { color: #8e2de2; font-size: 20px; transition: transform 0.3s, color 0.3s; }
+        .social-icons a:hover { transform: scale(1.2); color: #fff; }
+
+        .whatsapp-float {
+            position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+        }
+        .whatsapp-float img {
+            width: 55px; height: 55px; border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease; object-fit: cover;
+        }
+        .whatsapp-float img:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.7); }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-center { flex-direction: column; }
+            .nav-center a { margin: 8px 0; }
+            .navbar { flex-direction: column; align-items: flex-start; }
+            .nav-right { margin-top: 10px; margin-right: 0; }
+            .footer-container { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <a href="{% url 'home' %}" class="logo">
+        <img src="{% static 'images/logo.png' %}" alt="ClickFit Logo">
+    </a>
+
+    <div class="nav-center">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'blog' %}">Blog</a>
+        <a href="{% url 'product_list' %}">Products</a>
+        <a href="{% url 'contact' %}">Contact</a>
+        <a href="{% url 'view_cart' %}">Cart</a>
+        <a href="{% url 'services' %}">Services</a>
+    </div>
+
+    <div class="nav-right">
+        {% if user.is_authenticated %}
+            <a href="{% url 'wishlist' %}" class="icon-link">❤️</a>
+
+            <div class="notification-container">
+                <div class="notification-bell" onclick="toggleNotifications()">🔔
+                    {% if notifications %}
+                        <span class="notification-badge">{{ notifications|length }}</span>
+                    {% endif %}
+                </div>
+                <div id="notificationDropdown" class="notification-dropdown">
+                    {% if notifications %}
+                        {% for n in notifications %}
+                            <p>{{ n.message }}<br><small style="color: #888;">{{ n.created_at|timesince }} ago</small></p>
+                        {% endfor %}
+                        <form method="post" action="{% url 'mark_all_read' %}" style="text-align:center; margin-top:10px;">
+                            {% csrf_token %}
+                            <button type="submit" style="background:#8e2de2; color:white; border:none; padding:8px 15px; border-radius:20px; font-size:12px; cursor:pointer;">
+                                Mark All as Read
+                            </button>
+                        </form>
+                    {% else %}
+                        <p style="padding:12px; color:#ccc;">No new notifications</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <a href="{% url 'profile' %}">
+                <img src="{{ user.profile.profile_picture.url }}" class="navbar-profile-image" alt="Profile">
+            </a>
+        {% else %}
+            <a href="{% url 'signup' %}" style="color:white; margin-left:5px; text-decoration:none;">Signup</a>
+            <a href="{% url 'login' %}" style="color:white; margin-left:15px; text-decoration:none;">Login</a>
+        {% endif %}
+    </div>
+</div>
+
+{% if user.is_authenticated %}
+<a href="https://wa.me/923293947646?text=Hi!%20I%20have%20a%20question%20about%20Clickfit." target="_blank" class="whatsapp-float">
+    <img src="{% static 'images/whatsapp-icon.png' %}" alt="WhatsApp">
+</a>
+{% endif %}
+
+<div class="content">
+    {% block content %}{% endblock %}
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'blog' %}">Blog</a>
+            <a href="{% url 'product_list' %}">Products</a>
+            <a href="{% url 'contact' %}">Contact</a>
+            <a href="{% url 'services' %}">Services</a>
+        </div>
+
+        <div class="footer-section">
+            <h3>Legal</h3>
+            <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
+            <a href="{% url 'terms' %}">Terms & Conditions</a>
+            <a href="{% url 'refund_policy' %}">Refund Policy</a>
+            <a href="{% url 'shipping_policy' %}">Shipping Policy</a>
+            <a href="{% url 'faq' %}">FAQ</a>
+        </div>
+
+        <div class="footer-section newsletter">
+            <h3>Newsletter</h3>
+            <form method="post" action="{% url 'subscribe' %}">
+                {% csrf_token %}
+                <input type="email" name="email" placeholder="Your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+
+            <div class="social-icons">
+                <a href="https://facebook.com/share/1YWAC5pVjW/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/clickfit4/" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@clickfit6" target="_blank"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </div>
+    <p style="text-align:center; margin-top:20px; font-size:12px; color:#666;">© 2025 Click Fit Store. All rights reserved.</p>
+</div>
+
+<script>
+    function toggleNotifications() {
+        const dropdown = document.getElementById('notificationDropdown');
+        dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+    }
+
+    document.addEventListener('click', function(e) {
+        const bell = document.querySelector('.notification-bell');
+        const dropdown = document.getElementById('notificationDropdown');
+        if (!bell.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>

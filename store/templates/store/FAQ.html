@@ -1,0 +1,96 @@
+{% extends 'store/base.html' %}
+{% block content %}
+
+<style>
+    body {
+        background-color: #111;
+        font-family: 'Poppins', sans-serif;
+        color: #fff;
+    }
+
+    .faq-container {
+        max-width: 900px;
+        margin: 80px auto;
+        padding: 40px;
+        background: #222;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        transition: all 0.3s ease;
+    }
+
+    .faq-container h1 {
+        font-size: 36px;
+        color: #8e2de2;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .faq-container h2 {
+        font-size: 20px;
+        color: #ccc;
+        margin-top: 25px;
+    }
+
+    .faq-container p, .faq-container li {
+        font-size: 16px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        line-height: 1.8;
+        color: #ddd;
+    }
+
+    .faq-container a {
+        color: #8e2de2;
+        text-decoration: underline;
+        transition: color 0.3s;
+    }
+
+    .faq-container a:hover {
+        color: #c77dff;
+    }
+
+    .faq-container ol {
+        padding-left: 20px;
+    }
+</style>
+
+<div class="faq-container">
+    <h1>Frequently Asked Questions (FAQ)</h1>
+
+    <h2>Q. Is ordering online secure?</h2>
+    <p>A. Yes. We take the utmost care with the information you provide during the ordering process. Your data is handled securely and only accessible to authorized staff. For further questions, email us at <a href="mailto:clickfit48@gmail.com">support@clickfit.store</a>.</p>
+
+    <h2>Q. How do I place my order?</h2>
+    <p>A.</p>
+    <ol>
+        <li>Click on the product you want to buy.</li>
+        <li>Click on the “Add To Cart” button.</li>
+        <li>Add multiple products by repeating this process.</li>
+        <li>Click “Cart” from the menu.</li>
+        <li>Click “Proceed to Checkout.”</li>
+        <li>Fill in billing details and check your order summary.</li>
+        <li>Click the “Place Order” button.</li>
+        <li>You will receive a confirmation email.</li>
+        <li>Cash On Delivery (COD) is available.</li>
+    </ol>
+
+    <h2>Q. How do I cancel an order on ClickFit.Store?</h2>
+    <p>A. Login to your account and cancel your order from the dashboard. Guest users can call our helpline during office hours or cancel during the final confirmation call.</p>
+
+    <h2>Q. What is your refund policy?</h2>
+    <p>A. Please visit our <a href="{% url 'refund_policy' %}">Refund Policy</a> page.</p>
+
+    <h2>Q. What is your shipping cost?</h2>
+    <p>A. We offer <strong>Free Shipping</strong>. Our shipping cost is Rs 00/-.</p>
+
+    <h2>Q. Which courier service do you use for shipping?</h2>
+    <p>A. We use <strong>M & P, TCS, and Leopards Courier Services</strong> for delivery.</p>
+
+    <h2>Q. How long does delivery take?</h2>
+    <p>A. We deliver within <strong>2-3 working days</strong> after the confirmation call.</p>
+
+    <h2>Q. How can I order an out-of-stock product?</h2>
+    <p>A. You can pre-order out-of-stock items by contacting us via call or email.</p>
+</div>
+
+{% endblock %}

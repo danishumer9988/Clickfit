@@ -1,0 +1,31 @@
+body, .dashboard-module, .module {
+    background: #121212 !important;
+    color: #fff !important;
+}
+
+#header, .module caption {
+    background: #8e2de2 !important;
+    color: #fff !important;
+}
+
+#user-tools, .breadcrumbs {
+    background: #1f1f1f !important;
+    color: #fff !important;
+}
+
+a {
+    color: #ff6f61 !important;
+}
+a:hover {
+    color: #ff4b3e !important;
+}
+
+.button, input[type=submit], input[type=button] {
+    background: #8e2de2 !important;
+    border: none !important;
+    color: #fff !important;
+    box-shadow: 0 0 10px #8e2de2 !important;
+}
+.button:hover {
+    background: #5f1bb5 !important;
+}

@@ -1,0 +1,201 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #111;
+        color: #fff;
+    }
+
+    h2, h3 {
+        color: #8e2de2;
+    }
+
+    .product-container, .service-container {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+    .product-card, .service-card {
+        width: 250px;
+        background: #222;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+        overflow: hidden;
+    }
+
+    .product-card:hover, .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+    }
+
+    .image-container {
+        position: relative;
+        width: 100%;
+        height: 250px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 15px;
+    }
+
+    .image-container img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        border-radius: 10px;
+        transition: opacity 0.5s ease;
+        display: block;
+    }
+
+    .hover-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+
+    .product-card:hover .hover-image {
+        opacity: 1;
+    }
+
+    .product-card:hover .main-image {
+        opacity: 0;
+    }
+
+    .product-card h3, .service-card h3 {
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #fff;
+    }
+
+    .product-card p, .service-card p {
+        font-size: 14px;
+        color: #ccc;
+        margin-bottom: 10px;
+    }
+
+    .price {
+        font-size: 16px;
+        color: #28a745;
+        font-weight: bold;
+    }
+
+    .info-section, .reviews-section {
+        background: #222;
+        padding: 50px 20px;
+        border-radius: 15px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        margin: 50px auto;
+        max-width: 1200px;
+    }
+
+    .info-section .service-card i {
+        font-size: 40px;
+        margin-bottom: 15px;
+    }
+
+    .reviews-section blockquote {
+        font-style: italic;
+        color: #aaa;
+        margin-bottom: 20px;
+    }
+
+    footer {
+        background: #222;
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+        .product-card, .service-card {
+            width: 90%;
+        }
+    }
+</style>
+
+<!-- Hero Section -->
+<section style="background: url('{% static 'images/Hero.png' %}') no-repeat center center/cover; height: 600px; display: flex; align-items: center; justify-content: center;">
+</section>
+
+<!-- Product Section -->
+<div style="max-width: 1200px; margin: 50px auto; padding: 20px; font-family: Arial, sans-serif;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>Our Trendy Products</h2>
+        <a href="{% url 'product_list' %}" style="text-decoration:none; color:#8e2de2; font-size:16px;">See More →</a>
+    </div>
+
+    <div class="product-container">
+        <div class="product-card">
+            <div class="image-container">
+                <img src="{% static 'images/s8ultra-1.jpeg' %}" alt="S8 Ultra Smart Watch" class="main-image">
+                <img src="{% static 'images/s8ultra-2.jpeg' %}" alt="S8 Ultra Smart Watch" class="hover-image">
+            </div>
+            <h3>S8 Ultra Smart Watch</h3>
+            <p>High-quality smart watches for your active lifestyle.</p>
+            <p class="price">$6.0</p>
+        </div>
+
+        <div class="product-card">
+            <div class="image-container">
+                <img src="{% static 'images/suit-1.jpg' %}" alt="Men's Suit" class="main-image">
+                <img src="{% static 'images/suit-2.jpg' %}" alt="Men's Suit" class="hover-image">
+            </div>
+            <h3>Men’s Unstitched Cotton Suit</h3>
+            <p>Premium Men’s Cotton-Sotton Suit for Elegant Everyday Style.</p>
+            <p class="price">$7.04</p>
+        </div>
+
+        <div class="product-card">
+            <div class="image-container">
+                <img src="{% static 'images/suit-3.jpeg' %}" alt="Women's Suit" class="main-image">
+                <img src="{% static 'images/suit-4.jpeg' %}" alt="Women's Suit" class="hover-image">
+            </div>
+            <h3>2 Pcs Women's Unstitched Suit</h3>
+            <p>Stylish 2-Piece Women's Printed Suit for a Graceful Look.</p>
+            <p class="price">$6.0</p>
+        </div>
+    </div>
+</div>
+
+<!-- Services Section -->
+<div class="info-section">
+    <h2 style="text-align:center;"><a href="{% url 'services' %}" style="text-decoration:none; color:#8e2de2; font-size:16px;">Our Services</a></h2>
+    <div class="service-container">
+        <div class="service-card"><i class="fas fa-shopping-cart" style="color:#8e2de2;"></i><h3>Quality Products</h3><p style="text-decoration:none; color:white; font-size:16px;" > Best products at affordable prices with fast delivery across Pakistan.</p></div>
+        <div class="service-card"><i class="fas fa-code" style="color:#28a745;"></i><h3>Web Development</h3><p><a href="{% url 'services' %}" style="text-decoration:none; color:white; font-size:16px;">Custom websites, ecommerce stores, and business solutions tailored to your needs.</a></p></div>
+        <div class="service-card"><i class="fas fa-paint-brush" style="color:#17a2b8;"></i><h3>Graphic Designing</h3><p><a href="{% url 'services' %}" style="text-decoration:none; color:white; font-size:16px;">Logos, banners, social media posts, and brand kits designed by experts.</a></p></div>
+        <div class="service-card"><i class="fab fa-shopify" style="color:#ffc107;"></i><h3>Shopify Store Design</h3><p><a href="{% url 'services' %}" style="text-decoration:none; color:white; font-size:16px;">Launch or redesign your Shopify store to boost sales & conversions.</a></p></div>
+        <div class="service-card"><i class="fas fa-truck" style="color:#dc3545;"></i><h3>Fast Delivery</h3><p><a href="{% url 'services' %}" style="text-decoration:none; color:white; font-size:16px;">All products are shipped within 2-4 business days via trusted couriers.</a></p></div>
+        <div class="service-card"><i class="fas fa-headset" style="color:#6c757d;"></i><h3>24/7 Support</h3><p><a href="{% url 'services' %}" style="text-decoration:none; color:white; font-size:16px;">We’re always available to assist you via chat, email, or call.</a></p></div>
+        <div class="service-card"><i class="fas fa-bullhorn" style="color:#e83e8c;"></i><h3>Digital Marketing</h3><p><a href="{% url 'services' %}" style="text-decoration:none; color:white; font-size:16px;">Grow your business with targeted ads, SEO, and social media strategies.</a></p></div>
+        <div class="service-card"><i class="fab fa-tiktok" style="color:#000;"></i><h3>TikTok UK Accounts</h3><p><a href="{% url 'services' %}" style="text-decoration:none; color:white; font-size:16px;">Get verified TikTok UK accounts for content creation and marketing.</a></p></div>
+        <div class="service-card"><i class="fab fa-youtube" style="color:#ff0000;"></i><h3>YouTube UK Accounts</h3><p><a href="{% url 'services' %}" style="text-decoration:none; color:white; font-size:16px;">Buy monetized YouTube UK accounts for instant content publishing.</a></p></div>
+    </div>
+</div>
+
+<!-- Reviews Section -->
+<div class="reviews-section">
+    <h2 style="text-align:center;">What Our Customers Say</h2>
+    <div style="max-width:800px; margin:30px auto;">
+        <blockquote>"Amazing quality and super fast service! Highly recommended." - <strong>Ahmed Raza</strong></blockquote>
+        <blockquote>"Their web development service helped me launch my online store. Great support!" - <strong>Sana Malik</strong></blockquote>
+        <blockquote>"The graphic design service is top-notch! Got my brand logo within 24 hours." - <strong>Ali Khan</strong></blockquote>
+    </div>
+</div>
+
+{% endblock %}
+
+<footer>
+    &copy; 2025 YourStoreName. All Rights Reserved. | Designed by YourTeam
+</footer>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">

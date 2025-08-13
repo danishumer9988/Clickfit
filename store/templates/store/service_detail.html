@@ -1,0 +1,95 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background: #0d0d0d;
+        color: #f0f0f0;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .service-detail {
+        max-width: 800px;
+        margin: 60px auto;
+
+        padding: 35px;
+        background: #1a1a1a;
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 255, 180, 0.1);
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .service-detail h1 {
+        color: #00C897;
+        font-size: 34px;
+        margin-bottom: 20px;
+        text-shadow: 0 0 5px rgba(0, 255, 180, 0.4);
+    }
+
+    .service-detail img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-bottom: 25px;
+        box-shadow: 0 8px 20px rgba(0, 255, 180, 0.3);
+        transition: transform 0.3s;
+    }
+
+    .service-detail img:hover {
+        transform: scale(1.05);
+    }
+
+    .service-detail p {
+        font-size: 16px;
+        line-height: 1.8;
+        color: #ccc;
+        white-space: pre-wrap;
+    }
+
+    .back-btn {
+        display: inline-block;
+        margin-top: 30px;
+        background: #00C897;
+        color: #fff;
+        padding: 12px 30px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background 0.3s, transform 0.2s;
+    }
+
+    .back-btn:hover {
+        background: #00a382;
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+        .service-detail {
+            padding: 20px;
+        }
+
+        .service-detail h1 {
+            font-size: 26px;
+        }
+
+        .service-detail img {
+            width: 150px;
+            height: 150px;
+        }
+    }
+</style>
+
+<div class="service-detail">
+    <h1>{{ service.title }}</h1>
+
+    {% if service.image %}
+        <img src="{{ service.image.url }}" alt="{{ service.title }}">
+    {% endif %}
+
+    <p>{{ service.description|linebreaksbr }}</p>
+
+    <a href="{% url 'services' %}" class="back-btn">← Back to Services</a>
+</div>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'store/base.html' %}
+{% block content %}
+
+<style>
+    body {
+        background: #0d0d0d;
+        color: #fff;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .wishlist-container {
+        max-width: 800px;
+        margin: 60px auto 30px auto;
+        padding: 20px;
+        background: #1a1a1a;
+        border-radius: 12px;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    }
+
+    .wishlist-container h2 {
+        font-size: 28px;
+        color: #8e2de2;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    .wishlist-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 10px;
+        border-bottom: 1px solid #333;
+        transition: background 0.3s ease;
+    }
+
+    .wishlist-item:hover {
+        background: #222;
+    }
+
+    .wishlist-item img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        margin-right: 15px;
+        border-radius: 8px;
+    }
+
+    .wishlist-item-name {
+        font-size: 16px;
+        flex-grow: 1;
+        color: #fff;
+    }
+
+    .wishlist-item-price {
+        color: #ccc;
+        margin-left: 10px;
+    }
+
+    .wishlist-item-remove {
+        margin-left: auto;
+        color: #ff4d4d;
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.3s ease;
+    }
+
+    .wishlist-item-remove:hover {
+        color: #d93636;
+    }
+
+    .no-items {
+        text-align: center;
+        font-size: 16px;
+        color: #aaa;
+    }
+</style>
+
+<div class="wishlist-container">
+
+    <h2>Your Wishlist</h2>
+
+    {% if wishlist_items %}
+        <ul style="list-style: none; padding: 0; margin: 0;">
+            {% for item in wishlist_items %}
+                <li class="wishlist-item">
+                    <img src="{{ item.product.image_main.url }}" alt="{{ item.product.name }}">
+                    <div class="wishlist-item-name">{{ item.product.name }}</div>
+                    <div class="wishlist-item-price">${{ item.product.price }}</div>
+                    <a href="{% url 'remove_from_wishlist' item.product.id %}" class="wishlist-item-remove">Remove ❌</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-items">You have no items in your wishlist.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

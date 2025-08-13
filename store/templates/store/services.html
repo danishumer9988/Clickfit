@@ -1,0 +1,104 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background: #0d0d0d;
+        color: #f0f0f0;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .services-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 25px;
+        padding: 40px 20px;
+    }
+
+    .service-card {
+        width: 300px;
+        background: #1a1a1a;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 12px 30px rgba(0, 255, 180, 0.08);
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 255, 180, 0.15);
+    }
+
+    .service-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        box-shadow: 0 5px 15px rgba(0, 255, 180, 0.1);
+    }
+
+    .service-card h3 {
+        font-size: 22px;
+        margin-bottom: 10px;
+        color: #00C897;
+        text-shadow: 0 0 5px rgba(0, 255, 180, 0.3);
+    }
+
+    .service-card p {
+        font-size: 14px;
+        color: #ccc;
+        min-height: 60px;
+    }
+
+    .service-card a {
+        display: inline-block;
+        margin-top: 15px;
+        background: #00C897;
+        color: #fff;
+        padding: 10px 25px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background 0.3s, transform 0.2s;
+    }
+
+    .service-card a:hover {
+        background: #009d74;
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+        .service-card {
+            width: 90%;
+        }
+    }
+
+    h2.section-title {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 34px;
+        color: #00C897;
+        text-shadow: 0 0 5px rgba(0, 255, 180, 0.3);
+    }
+</style>
+
+<h2 class="section-title">Our Services</h2>
+
+<div class="services-container">
+    {% for service in services %}
+    <div class="service-card">
+        {% if service.image %}
+            <img src="{{ service.image.url }}" alt="{{ service.title }}">
+        {% endif %}
+        <h3>{{ service.title }}</h3>
+        <p>{{ service.description|truncatewords:20 }}</p>
+        <a href="{% url 'service_detail' service.slug %}">View More</a>
+    </div>
+    {% empty %}
+        <p style="text-align:center;">No services available.</p>
+    {% endfor %}
+</div>
+{% endblock %}

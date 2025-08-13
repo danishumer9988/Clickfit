@@ -1,0 +1,117 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #0d0d0d;
+        color: #fff;
+    }
+
+    .otp-container {
+        max-width: 450px;
+        margin: 50px auto;
+        background: #1a1a1a;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    }
+
+    h1 {
+        text-align: center;
+        color: #0d47a1; /* Dark Blue */
+        margin-bottom: 25px;
+        text-shadow: 0 0 8px rgba(13, 71, 161, 0.5), 0 0 15px rgba(13, 71, 161, 0.3);
+    }
+
+    label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+        color: #ccc;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #444;
+        margin-top: 8px;
+        text-align: center;
+        background: #2a2a2a;
+        color: #fff;
+        font-size: 16px;
+    }
+
+    .transaction-info {
+        background: #2a2a2a;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 15px;
+        border: 1px dashed #00c897;
+        color: #00c897;
+        font-size: 15px;
+    }
+
+    button {
+        margin-top: 25px;
+        background: #0d47a1;
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 30px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s;
+        width: 100%;
+    }
+
+    button:hover {
+        background: #0b3c91;
+    }
+
+    .order-summary {
+        margin-top: 25px;
+        background: #2a2a2a;
+        padding: 15px;
+        border-radius: 10px;
+        color: #ccc;
+    }
+
+    .order-summary p {
+        margin: 5px 0;
+    }
+
+    .order-summary h3 {
+        color: #0d47a1;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="otp-container">
+    <h1>Verify OTP</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <label>Enter OTP sent to your email:</label>
+        <input type="text" name="otp" maxlength="6" required>
+
+        {% if order_data.payment_method == 'JAZZCASH' %}
+            <div class="transaction-info">
+                <strong>Note:</strong> You selected <b>JazzCash/Easypaisa</b>. We will verify your transaction ID after OTP verification.
+            </div>
+        {% endif %}
+
+        <div class="order-summary">
+            <h3>Order Summary:</h3>
+            {% for item in cart_items %}
+                <p>{{ item.product.name }} x {{ item.quantity }} - ${{ item.subtotal|floatformat:2 }}</p>
+            {% endfor %}
+            <p><strong>Total:</strong> ${{ cart_total|floatformat:2 }}</p>
+        </div>
+
+        <button type="submit">Verify & Place Order</button>
+    </form>
+</div>
+
+{% endblock %}
