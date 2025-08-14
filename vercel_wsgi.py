@@ -1,4 +1,1 @@
-from ecommerce.wsgi import application
-
-def handler(event, context):
-    return application(event, context)
+from ecommerce.wsgi import app
