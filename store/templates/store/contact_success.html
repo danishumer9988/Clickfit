@@ -1,0 +1,177 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Message Sent - ShopNow{% endblock %}
+
+{% block content %}
+<style>
+    .success-container {
+        max-width: 600px;
+        margin: 4rem auto;
+        text-align: center;
+        padding: 3rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .success-icon {
+        font-size: 4rem;
+        color: var(--success-color);
+        margin-bottom: 1.5rem;
+        animation: float 2s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .success-title {
+        font-size: 2.5rem;
+        color: var(--success-color);
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .success-message {
+        font-size: 1.1rem;
+        color: var(--gray-color);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+
+    .next-steps {
+        background: var(--light-gray);
+        padding: 2rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        text-align: left;
+    }
+
+    .steps-title {
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--dark-color);
+        text-align: center;
+    }
+
+    .steps-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .steps-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 6px;
+        border-left: 4px solid var(--primary-color);
+    }
+
+    .step-number {
+        background: var(--primary-color);
+        color: white;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .success-actions {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .response-time {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background: #e8f5e8;
+        border: 1px solid #c3e6cb;
+        border-radius: 6px;
+        color: #155724;
+    }
+
+    @media (max-width: 768px) {
+        .success-container {
+            padding: 2rem;
+            margin: 2rem 1rem;
+        }
+
+        .success-title {
+            font-size: 2rem;
+        }
+
+        .success-actions {
+            flex-direction: column;
+        }
+
+        .steps-list li {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+    }
+</style>
+
+<div class="success-container">
+    <div class="success-icon">✉️</div>
+    <h1 class="success-title">Message Sent Successfully!</h1>
+
+    <p class="success-message">
+        Thank you for reaching out to us! Your message has been received
+        and our team will get back to you as soon as possible.
+    </p>
+
+    <div class="next-steps">
+        <h3 class="steps-title">What Happens Next?</h3>
+        <ul class="steps-list">
+            <li>
+                <span class="step-number">1</span>
+                <span>You'll receive an automated confirmation email within minutes</span>
+            </li>
+            <li>
+                <span class="step-number">2</span>
+                <span>Our support team will review your message during business hours</span>
+            </li>
+            <li>
+                <span class="step-number">3</span>
+                <span>We'll respond to your inquiry within 24-48 hours</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="response-time">
+        <strong>⏰ Response Time:</strong> We typically respond to all inquiries
+        within one business day. For urgent matters, please call us directly.
+    </div>
+
+    <div class="success-actions">
+        <a href="{% url 'index' %}" class="btn btn-primary">Back to Home</a>
+        <a href="{% url 'products' %}" class="btn btn-outline">Continue Shopping</a>
+        <a href="{% url 'contact' %}" class="btn btn-outline">Send Another Message</a>
+    </div>
+</div>
+
+<script>
+    // Track contact form submission for analytics
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'contact_form_submit', {
+            event_category: 'engagement',
+            event_label: 'Contact Form Success'
+        });
+    }
+
+    // Clear form data from session storage if any
+    sessionStorage.removeItem('contactFormData');
+</script>
+{% endblock %}

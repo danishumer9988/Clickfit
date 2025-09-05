@@ -1,0 +1,769 @@
+
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Home - ClickFit{% endblock %}
+
+{% block content %}
+<style>
+    /* Hero Section */
+    .hero-section {
+        background: url("{% static 'images/hero.png' %}") no-repeat center center/cover;
+        color: white;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        padding: 2rem;
+        animation: fadeInUp 1s ease-out;
+        margin-top: 60px; /* Added top margin */
+    }
+
+    .hero-content h1 {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        line-height: 1.2;
+    }
+
+    .hero-content p {
+        font-size: 1.5rem;
+        margin-bottom: 2.5rem;
+        opacity: 0.95;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        line-height: 1.6;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .hero-btn {
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+    .hero-btn-primary {
+        background: white;
+        color: var(--primary-color);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .hero-btn-primary:hover {
+        background: var(--primary-color);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .hero-btn-outline {
+        background: transparent;
+        border: 2px solid white;
+        color: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .hero-btn-outline:hover {
+        background: white;
+        color: var(--primary-color);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    /* About Section */
+    .about-section {
+        padding: 6rem 0;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+
+    .about-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+    }
+
+    .about-image {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        transform: rotate(-2deg);
+        transition: transform 0.3s ease;
+    }
+
+    .about-image:hover {
+        transform: rotate(0deg) scale(1.02);
+    }
+
+    .about-image img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+    }
+
+    .about-text h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--dark-color);
+    }
+
+    .about-text p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #666;
+        margin-bottom: 2rem;
+    }
+
+    /* Features Section */
+    .features-section {
+        padding: 6rem 0;
+        background: white;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 3rem;
+        margin-top: 3rem;
+    }
+
+    .feature-card {
+        text-align: center;
+        padding: 2rem;
+        border-radius: 15px;
+        background: white;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+    }
+
+    .feature-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: var(--dark-color);
+    }
+
+    /* Products Section */
+    .products-section {
+        padding: 6rem 0;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 3rem;
+        font-size: 2.5rem;
+        color: var(--dark-color);
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 4px;
+        background: var(--primary-color);
+        margin: 1rem auto;
+        border-radius: 2px;
+    }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    .product-card.animate {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .product-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .product-image-container {
+        overflow: hidden;
+        height: 250px;
+    }
+
+    .product-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .product-image {
+        transform: scale(1.1);
+    }
+
+    .product-info {
+        padding: 1.5rem;
+        position: relative;
+    }
+
+    .product-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--dark-color);
+    }
+
+    .product-price {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .product-category {
+        color: var(--gray-color);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        padding: 0.3rem 0.8rem;
+        background: #f8f9fa;
+        border-radius: 15px;
+        display: inline-block;
+    }
+
+    .product-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+    }
+
+    .view-details {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+    .view-details:hover {
+        color: var(--secondary-color);
+    }
+
+    .add-to-cart-btn {
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .add-to-cart-btn:hover {
+        background: #e66a00;
+        transform: scale(1.05);
+    }
+
+    .out-of-stock {
+        color: var(--danger-color);
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        background: #ffe6e6;
+        border-radius: 15px;
+    }
+
+    /* Newsletter Section */
+    .newsletter-section {
+        padding: 4rem 0;
+        background: var(--primary-color);
+        color: white;
+        text-align: center;
+    }
+
+    .newsletter-content {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .newsletter-form {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .newsletter-input {
+        flex: 1;
+        min-width: 250px;
+        padding: 1rem;
+        border: none;
+        border-radius: 25px;
+        font-size: 1rem;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    .fade-in {
+        animation: fadeIn 1s ease-out;
+    }
+
+    .slide-in-left {
+        animation: slideInLeft 1s ease-out;
+    }
+
+    .slide-in-right {
+        animation: slideInRight 1s ease-out;
+    }
+
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-100px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(100px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .hero-content h1 {
+            font-size: 3rem;
+        }
+
+        .about-content {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .about-image {
+            order: -1;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero-section {
+            min-height: 70vh;
+        }
+
+        .hero-content {
+            margin-top: 40px; /* Adjusted for mobile */
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+        }
+
+        .hero-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-btn {
+            width: 100%;
+            max-width: 250px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2rem;
+        }
+
+        .newsletter-form {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .newsletter-input {
+            width: 100%;
+        }
+
+        .products-grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-content h1 {
+            font-size: 2rem;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+        }
+
+        .about-text h2 {
+            font-size: 2rem;
+        }
+
+        .hero-section {
+            min-height: 60vh;
+        }
+
+        .hero-content {
+            margin-top: 30px; /* Adjusted for small mobile */
+        }
+    }
+</style>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <div class="hero-buttons">
+            <a href="{% url 'products' %}" class="hero-btn hero-btn-primary">Shop Now</a>
+            <a href="#products" class="hero-btn hero-btn-outline">Featured Products</a>
+            <a href="#about" class="hero-btn hero-btn-outline">Learn More</a>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="about-section">
+    <div class="container">
+        <div class="about-content">
+            <div class="about-image slide-in-left">
+                <img src="{% static 'images/about.png' %}" alt="About ClickFit">
+            </div>
+            <div class="about-text slide-in-right">
+                <h2>Why Choose ClickFit?</h2>
+                <p>At ClickFit, we believe in providing our customers with the best fitness shopping experience. With a wide selection of high-quality fitness products, competitive prices, and fast shipping, we make online shopping simple and enjoyable.</p>
+                <p>Our dedicated team works tirelessly to ensure that every order is processed quickly and efficiently, and our customer service team is always ready to help with any questions or concerns.</p>
+                <a href="{% url 'contact' %}" class="btn btn-primary">Get in Touch</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="container">
+        <h2 class="section-title">Why Shop With Us</h2>
+        <div class="features-grid">
+            <div class="feature-card fade-in" style="animation-delay: 0.1s;">
+                <div class="feature-icon">
+                    <i class="fas fa-shipping-fast"></i>
+                </div>
+                <h3>Fast Shipping</h3>
+                <p>Get your fitness orders delivered quickly with our reliable shipping partners.</p>
+            </div>
+            <div class="feature-card fade-in" style="animation-delay: 0.2s;">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Secure Payments</h3>
+                <p>Your payments are protected with industry-leading security measures.</p>
+            </div>
+            <div class="feature-card fade-in" style="animation-delay: 0.3s;">
+                <div class="feature-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>24/7 Support</h3>
+                <p>Our customer support team is available around the clock to help you.</p>
+            </div>
+            <div class="feature-card fade-in" style="animation-delay: 0.4s;">
+                <div class="feature-icon">
+                    <i class="fas fa-undo"></i>
+                </div>
+                <h3>Easy Returns</h3>
+                <p>Not satisfied? Return your fitness items within 30 days for a full refund.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section id="products" class="products-section">
+    <div class="container">
+        <h2 class="section-title">Featured Products</h2>
+
+        {% if products %}
+        <div class="products-grid">
+            {% for product in products %}
+            <div class="product-card" style="animation-delay: {{ forloop.counter0|add:1 }}00ms">
+                <div class="product-image-container">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                    {% else %}
+                    <img src="https://via.placeholder.com/300x200?text=No+Image" alt="{{ product.name }}" class="product-image">
+                    {% endif %}
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">{{ product.name }}</h3>
+                    <div class="product-price">${{ product.price }}</div>
+                    <span class="product-category">{{ product.get_category_display }}</span>
+
+                    <div class="product-actions">
+                        <a href="{% url 'product_detail' product.id %}" class="view-details">
+                            View Details
+                        </a>
+
+                        {% if product.stock > 0 %}
+                        <button class="add-to-cart-btn" onclick="addToCart({{ product.id }})">
+                            <i class="fas fa-shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                        {% else %}
+                        <span class="out-of-stock">Out of Stock</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center">
+            <p class="lead">No products available at the moment. Please check back later.</p>
+            <a href="{% url 'products' %}" class="btn btn-primary mt-3">Browse All Products</a>
+        </div>
+        {% endif %}
+
+        {% if products %}
+        <div class="text-center mt-4">
+            <a href="{% url 'products' %}" class="btn btn-primary btn-lg">View All Products</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="newsletter-section">
+    <div class="container">
+        <div class="newsletter-content">
+            <h2>Stay Updated</h2>
+            <p>Subscribe to our newsletter for the latest fitness products and exclusive offers</p>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" placeholder="Enter your email" class="newsletter-input" required>
+                <button type="submit" class="btn btn-light">Subscribe</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Add to cart function
+    async function addToCart(productId) {
+        try {
+            const response = await fetch('{% url "add_to_cart" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ product_id: productId })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                showNotification('Product added to cart successfully!', 'success');
+                updateCartCount();
+            } else {
+                showNotification('Error: ' + data.error, 'error');
+            }
+        } catch (error) {
+            showNotification('An error occurred. Please try again.', 'error');
+        }
+    }
+
+    // Newsletter form submission
+    document.getElementById('newsletterForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const email = this.querySelector('input[type="email"]').value;
+
+        try {
+            const response = await fetch('{% url "subscribe" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ email: email })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                showNotification('Successfully subscribed to our newsletter!', 'success');
+                this.reset();
+            } else {
+                showNotification('Error: ' + data.error, 'error');
+            }
+        } catch (error) {
+            showNotification('An error occurred. Please try again.', 'error');
+        }
+    });
+
+    // Animation on scroll
+    function animateOnScroll() {
+        const productCards = document.querySelectorAll('.product-card');
+        productCards.forEach(card => {
+            const cardTop = card.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+
+            if (cardTop < windowHeight - 100) {
+                card.classList.add('animate');
+            }
+        });
+    }
+
+    // Initial animation check
+    animateOnScroll();
+
+    // Listen for scroll events
+    window.addEventListener('scroll', animateOnScroll);
+
+    // Show notification function
+    function showNotification(message, type) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type}`;
+        notification.style.position = 'fixed';
+        notification.style.top = '20px';
+        notification.style.right = '20px';
+        notification.style.zIndex = '9999';
+        notification.style.minWidth = '300px';
+        notification.style.padding = '1rem';
+        notification.style.borderRadius = '4px';
+        notification.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+
+        if (type === 'success') {
+            notification.style.background = '#d4edda';
+            notification.style.color = '#155724';
+            notification.style.border = '1px solid #c3e6cb';
+        } else {
+            notification.style.background = '#f8d7da';
+            notification.style.color = '#721c24';
+            notification.style.border = '1px solid #f5c6cb';
+        }
+
+        notification.innerHTML = `
+            ${message}
+            <button style="background: none; border: none; float: right; cursor: pointer;" onclick="this.parentElement.remove()">×</button>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.remove();
+            }
+        }, 3000);
+    }
+
+    // Get CSRF token function
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Initialize animations when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate feature cards
+        const featureCards = document.querySelectorAll('.feature-card');
+        featureCards.forEach((card, index) => {
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 200);
+        });
+
+        // Animate about sections
+        const aboutSections = document.querySelectorAll('.slide-in-left, .slide-in-right');
+        aboutSections.forEach((section, index) => {
+            setTimeout(() => {
+                section.style.opacity = '1';
+                section.style.transform = 'translateX(0)';
+            }, index * 300);
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,319 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Shopping Cart - ShopNow{% endblock %}
+
+{% block content %}
+<style>
+    .cart-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .cart-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .cart-items {
+        margin-bottom: 2rem;
+    }
+
+    .cart-item {
+        display: grid;
+        grid-template-columns: 100px 1fr auto auto auto;
+        gap: 1rem;
+        align-items: center;
+        padding: 1.5rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .cart-item-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    .cart-item-info {
+        padding-right: 1rem;
+    }
+
+    .cart-item-name {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--dark-color);
+    }
+
+    .cart-item-category {
+        color: var(--gray-color);
+        font-size: 0.9rem;
+    }
+
+    .cart-item-price {
+        font-weight: bold;
+        color: var(--primary-color);
+        text-align: center;
+    }
+
+    .cart-item-quantity {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .quantity-btn {
+        width: 30px;
+        height: 30px;
+        border: 1px solid #ddd;
+        background: white;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .quantity-input {
+        width: 50px;
+        height: 30px;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .cart-item-total {
+        font-weight: bold;
+        color: var(--dark-color);
+        text-align: center;
+    }
+
+    .remove-item-btn {
+        background: none;
+        border: none;
+        color: var(--danger-color);
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 0.5rem;
+    }
+
+    .cart-summary {
+        background: var(--light-gray);
+        padding: 2rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+    }
+
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .summary-total {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 2px solid var(--dark-color);
+    }
+
+    .cart-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .continue-shopping {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .empty-cart {
+        text-align: center;
+        padding: 3rem;
+        color: var(--gray-color);
+    }
+
+    .empty-cart-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .cart-item {
+            grid-template-columns: 80px 1fr;
+            grid-template-rows: auto auto auto;
+            gap: 0.5rem;
+        }
+
+        .cart-item-price {
+            grid-column: 1;
+            grid-row: 2;
+            text-align: left;
+        }
+
+        .cart-item-quantity {
+            grid-column: 2;
+            grid-row: 2;
+            justify-self: start;
+        }
+
+        .cart-item-total {
+            grid-column: 1;
+            grid-row: 3;
+            text-align: left;
+        }
+
+        .remove-item-btn {
+            grid-column: 2;
+            grid-row: 3;
+            justify-self: end;
+        }
+
+        .cart-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="cart-container">
+    <div class="cart-header">
+        <h1>Shopping Cart</h1>
+    </div>
+
+    {% if cart_items %}
+    <div class="cart-items">
+        {% for item in cart_items %}
+        <div class="cart-item" data-product-id="{{ item.id }}">
+            <img src="{{ item.image }}" alt="{{ item.name }}" class="cart-item-image">
+
+            <div class="cart-item-info">
+                <h3 class="cart-item-name">{{ item.name }}</h3>
+                <p class="cart-item-category">{{ item.category|default:"Product" }}</p>
+            </div>
+
+            <div class="cart-item-price">${{ item.price }}</div>
+
+            <div class="cart-item-quantity">
+                <button class="quantity-btn" onclick="updateQuantity({{ item.id }}, {{ item.quantity|add:'-1' }})">-</button>
+                <input type="number" class="quantity-input" value="{{ item.quantity }}" min="1"
+                       onchange="updateQuantity({{ item.id }}, this.value)" data-product-id="{{ item.id }}">
+                <button class="quantity-btn" onclick="updateQuantity({{ item.id }}, {{ item.quantity|add:'1' }})">+</button>
+            </div>
+
+            <div class="cart-item-total">
+                ${{ item.total|default:item.price }}
+            </div>
+
+            <button class="remove-item-btn" onclick="removeFromCart({{ item.id }})">×</button>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="cart-summary">
+        <div class="summary-item">
+            <span>Subtotal:</span>
+            <span>${{ total }}</span>
+        </div>
+        <div class="summary-item">
+            <span>Shipping:</span>
+            <span>Calculated at checkout</span>
+        </div>
+        <div class="summary-item">
+            <span>Tax:</span>
+            <span>Calculated at checkout</span>
+        </div>
+        <div class="summary-total">
+            <span>Total:</span>
+            <span>${{ total }}</span>
+        </div>
+    </div>
+
+    <div class="cart-actions">
+        <a href="{% url 'products' %}" class="continue-shopping">
+            ← Continue Shopping
+        </a>
+        <a href="{% url 'checkout' %}" class="btn btn-primary">Proceed to Checkout</a>
+    </div>
+    {% else %}
+    <div class="empty-cart">
+        <div class="empty-cart-icon">🛒</div>
+        <h3>Your cart is empty</h3>
+        <p>Looks like you haven't added any items to your cart yet.</p>
+        <a href="{% url 'products' %}" class="btn btn-primary mt-2">Start Shopping</a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    async function updateQuantity(productId, newQuantity) {
+        if (newQuantity < 1) {
+            removeFromCart(productId);
+            return;
+        }
+
+        try {
+            const response = await fetch('{% url "update_cart" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    cart: [{
+                        id: productId,
+                        quantity: parseInt(newQuantity)
+                    }]
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                location.reload(); // Reload to update prices and totals
+            } else {
+                alert('Error: ' + data.error);
+            }
+        } catch (error) {
+            alert('An error occurred. Please try again.');
+        }
+    }
+
+    async function removeFromCart(productId) {
+        try {
+            const response = await fetch('{% url "remove_from_cart" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ product_id: productId })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error: ' + data.error);
+            }
+        } catch (error) {
+            alert('An error occurred. Please try again.');
+        }
+    }
+
+    // Update item totals when quantity changes
+    document.querySelectorAll('.quantity-input').forEach(input => {
+        input.addEventListener('change', function() {
+            const productId = this.dataset.productId;
+            const quantity = parseInt(this.value);
+            updateQuantity(productId, quantity);
+        });
+    });
+</script>
+{% endblock %}

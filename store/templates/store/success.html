@@ -1,0 +1,202 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Order Success - ShopNow{% endblock %}
+
+{% block content %}
+<style>
+    .success-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        text-align: center;
+        padding: 3rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .success-icon {
+        font-size: 4rem;
+        color: var(--success-color);
+        margin-bottom: 1.5rem;
+        animation: bounce 1s ease-in-out;
+    }
+
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+        40% {
+            transform: translateY(-20px);
+        }
+        60% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .success-title {
+        font-size: 2.5rem;
+        color: var(--success-color);
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .success-message {
+        font-size: 1.1rem;
+        color: var(--gray-color);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+
+    .order-details {
+        background: var(--light-gray);
+        padding: 2rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        text-align: left;
+    }
+
+    .detail-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .detail-label {
+        font-weight: 500;
+        color: var(--gray-color);
+    }
+
+    .detail-value {
+        font-weight: 600;
+        color: var(--dark-color);
+    }
+
+    .success-actions {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .email-note {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background: #e8f5e8;
+        border: 1px solid #c3e6cb;
+        border-radius: 6px;
+        color: #155724;
+    }
+
+    @media (max-width: 768px) {
+        .success-container {
+            padding: 2rem;
+            margin: 1rem;
+        }
+
+        .success-title {
+            font-size: 2rem;
+        }
+
+        .success-actions {
+            flex-direction: column;
+        }
+
+        .order-details {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
+<div class="success-container">
+    <div class="success-icon">✅</div>
+    <h1 class="success-title">Order Confirmed!</h1>
+
+    <p class="success-message">
+        Thank you for your purchase! Your order has been successfully placed
+        and is being processed. You will receive a confirmation email shortly.
+    </p>
+
+    {% if order %}
+    <div class="order-details">
+        <h3 style="margin-bottom: 1.5rem; text-align: center;">Order Details</h3>
+
+        <div class="detail-item">
+            <span class="detail-label">Order Number:</span>
+            <span class="detail-value">#{{ order.id }}</span>
+        </div>
+
+        <div class="detail-item">
+            <span class="detail-label">Customer Name:</span>
+            <span class="detail-value">{{ order.name }}</span>
+        </div>
+
+        <div class="detail-item">
+            <span class="detail-label">Email:</span>
+            <span class="detail-value">{{ order.email }}</span>
+        </div>
+
+        <div class="detail-item">
+            <span class="detail-label">Shipping Address:</span>
+            <span class="detail-value">{{ order.address }}</span>
+        </div>
+
+        <div class="detail-item">
+            <span class="detail-label">Payment Method:</span>
+            <span class="detail-value">{{ order.get_payment_method_display }}</span>
+        </div>
+
+        <div class="detail-item">
+            <span class="detail-label">Order Total:</span>
+            <span class="detail-value">${{ order.total }}</span>
+        </div>
+
+        <div class="detail-item">
+            <span class="detail-label">Order Status:</span>
+            <span class="detail-value" style="color: var(--success-color);">
+                {{ order.get_status_display }}
+            </span>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="email-note">
+        <strong>📧 Important:</strong> A confirmation email has been sent to
+        {% if order %}{{ order.email }}{% else %}your email address{% endif %}.
+        Please check your inbox (and spam folder).
+    </div>
+
+    <div class="success-actions">
+        <a href="{% url 'products' %}" class="btn btn-primary">Continue Shopping</a>
+        <a href="{% url 'index' %}" class="btn btn-outline">Back to Home</a>
+        <a href="{% url 'contact' %}" class="btn btn-outline">Contact Support</a>
+    </div>
+</div>
+
+<script>
+    // Clear any remaining cart data
+    localStorage.removeItem('cart');
+    sessionStorage.removeItem('cart');
+
+    // Track conversion for analytics
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'purchase', {
+            transaction_id: '{{ order.id }}',
+            value: {{ order.total }},
+            currency: 'USD',
+            items: [
+                {% for item in order.get_items %}
+                {
+                    item_id: '{{ item.id }}',
+                    item_name: '{{ item.name }}',
+                    price: {{ item.price }},
+                    quantity: {{ item.quantity }}
+                },
+                {% endfor %}
+            ]
+        });
+    }
+</script>
+{% endblock %}

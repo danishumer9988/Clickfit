@@ -1,0 +1,294 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Checkout - ShopNow{% endblock %}
+
+{% block content %}
+<style>
+    .checkout-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+    }
+
+    .checkout-header {
+        grid-column: 1 / -1;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .checkout-section {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: var(--dark-color);
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--light-gray);
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--dark-color);
+    }
+
+    .form-error {
+        color: var(--danger-color);
+        font-size: 0.9rem;
+        margin-top: 0.25rem;
+    }
+
+    .payment-methods {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .payment-method {
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        padding: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .payment-method:hover {
+        border-color: var(--primary-color);
+    }
+
+    .payment-method.selected {
+        border-color: var(--primary-color);
+        background-color: rgba(74, 108, 247, 0.1);
+    }
+
+    .payment-method input {
+        display: none;
+    }
+
+    .order-summary-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .order-summary-total {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 2px solid var(--dark-color);
+    }
+
+    .checkout-actions {
+        grid-column: 1 / -1;
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .order-items {
+        max-height: 300px;
+        overflow-y: auto;
+        margin-bottom: 1rem;
+    }
+
+    .order-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .order-item-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .order-item-image {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    .order-item-name {
+        font-weight: 500;
+    }
+
+    .order-item-price {
+        color: var(--primary-color);
+        font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+        .checkout-container {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .payment-methods {
+            grid-template-columns: 1fr;
+        }
+
+        .checkout-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="checkout-container">
+    <div class="checkout-header">
+        <h1>Checkout</h1>
+        <p>Complete your purchase by filling out the form below</p>
+    </div>
+
+    <div class="checkout-section">
+        <h2 class="section-title">Shipping Information</h2>
+        <form method="post" id="checkout-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label class="form-label">{{ form.name.label }}</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                <div class="form-error">{{ form.name.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">{{ form.email.label }}</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                <div class="form-error">{{ form.email.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">{{ form.phone.label }}</label>
+                {{ form.phone }}
+                {% if form.phone.errors %}
+                <div class="form-error">{{ form.phone.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">{{ form.address.label }}</label>
+                {{ form.address }}
+                {% if form.address.errors %}
+                <div class="form-error">{{ form.address.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <h2 class="section-title">Payment Method</h2>
+
+            <div class="payment-methods">
+                {% for value, label in form.payment_method.field.choices %}
+                <label class="payment-method {% if form.payment_method.value == value %}selected{% endif %}">
+                    <input type="radio" name="payment_method" value="{{ value }}"
+                           {% if form.payment_method.value == value %}checked{% endif %}>
+                    {{ label }}
+                </label>
+                {% endfor %}
+            </div>
+            {% if form.payment_method.errors %}
+            <div class="form-error">{{ form.payment_method.errors.0 }}</div>
+            {% endif %}
+        </form>
+    </div>
+
+    <div class="checkout-section">
+        <h2 class="section-title">Order Summary</h2>
+
+        <div class="order-items">
+            {% for item in cart_items %}
+            <div class="order-item">
+                <div class="order-item-info">
+                    <img src="{{ item.image }}" alt="{{ item.name }}" class="order-item-image">
+                    <div>
+                        <div class="order-item-name">{{ item.name }}</div>
+                        <div>Qty: {{ item.quantity }}</div>
+                    </div>
+                </div>
+                <div class="order-item-price">${{ item.price }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="order-summary-item">
+            <span>Subtotal:</span>
+            <span>${{ total }}</span>
+        </div>
+        <div class="order-summary-item">
+            <span>Shipping:</span>
+            <span>Calculated at checkout</span>
+        </div>
+        <div class="order-summary-item">
+            <span>Tax:</span>
+            <span>Calculated at checkout</span>
+        </div>
+        <div class="order-summary-total">
+            <span>Total:</span>
+            <span>${{ total }}</span>
+        </div>
+    </div>
+
+    <div class="checkout-actions">
+        <a href="{% url 'cart' %}" class="btn btn-outline">← Back to Cart</a>
+        <button type="submit" form="checkout-form" class="btn btn-primary">Place Order</button>
+    </div>
+</div>
+
+<script>
+    // Payment method selection
+    document.querySelectorAll('.payment-method').forEach(method => {
+        method.addEventListener('click', function() {
+            document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+            this.classList.add('selected');
+            this.querySelector('input').checked = true;
+        });
+    });
+
+    // Form validation
+    document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        const requiredFields = this.querySelectorAll('[required]');
+        let valid = true;
+
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                valid = false;
+                field.style.borderColor = 'var(--danger-color)';
+            } else {
+                field.style.borderColor = '';
+            }
+        });
+
+        if (!valid) {
+            e.preventDefault();
+            alert('Please fill in all required fields.');
+        }
+    });
+</script>
+{% endblock %}
